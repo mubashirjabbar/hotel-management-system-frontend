@@ -1,40 +1,26 @@
 import * as React from "react";
+import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { Link } from "react-router-dom";
-
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useHistory } from "react-router-dom";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright all reserved © "}
-      {/* <Link color="inherit" href="https://mui.com/"> */}
-      Hotel Management System
-      {/* </Link>{" "} */}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import Header from "../../components/header/Header";
 
-const theme = createTheme();
+const mdTheme = createTheme();
 
-export default function SignUp() {
+function UserProfileUpdate() {
+  const history = useHistory();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -43,9 +29,36 @@ export default function SignUp() {
       password: data.get("password"),
     });
   };
-
+  function Copyright(props) {
+    return (
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        align="center"
+        {...props}
+      >
+        {"Copyright all reserved © "}
+        {/* <Link color="inherit" href="https://mui.com/"> */}
+        Hotel Management System
+        {/* </Link>{" "} */}
+        {new Date().getFullYear()}
+        {"."}
+      </Typography>
+    );
+  }
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={mdTheme}>
+      <div>
+        <Header
+          leftHeader={"User Profile"}
+          rightHeader={"Logout"}
+          onClickLeftHeader={() => {
+            history.push("/login");
+
+          }}
+        />
+      </div>
+
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -57,10 +70,10 @@ export default function SignUp() {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "#1976d2" }}>
-            <LockOutlinedIcon />
+            <AccountCircleIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Update Profile
           </Typography>
           <Box
             component="form"
@@ -83,10 +96,10 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  id="role"
+                  label="Role"
+                  name="Role"
+                  autoComplete="Role"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -110,31 +123,17 @@ export default function SignUp() {
                   autoComplete="family-name"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
             </Grid>
-            <Link to={"/"} style={{ color: "black" }}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Sign up
-                </Button>
-              </Link>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link to={"/login"} style={{ color: "#1976d2"  }}>
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Update
+            </Button>
+            <Grid container justifyContent="center">
+              <Grid item></Grid>
             </Grid>
           </Box>
         </Box>
@@ -142,4 +141,8 @@ export default function SignUp() {
       </Container>
     </ThemeProvider>
   );
+}
+
+export default function Profile() {
+  return <UserProfileUpdate />;
 }
