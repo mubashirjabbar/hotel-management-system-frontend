@@ -1,45 +1,47 @@
 import * as React from "react";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
-
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Button from "@mui/material/Button";
-
 import { useHistory } from "react-router-dom";
-
-import DataTable from "../../components/DataTable/DataTable";
+import DataTable from "../../components/dataTable/DataTable";
 import Header from "../../components/header/Header";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useSelector} from 'react-redux';
+
+import "./Home.scss";
 
 const mdTheme = createTheme();
 
 function DashboardContent() {
   const history = useHistory();
+  const states = useSelector(state => state);
+
+  React.useEffect(() => {
+    toast.success("Successfully login", {
+      position: "top-right",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }, []);
+
   const onPressReservation = () => {
     history.push("/addReservation");
   };
 
   return (
     <ThemeProvider theme={mdTheme}>
-      <div>
-        <Header
-          leftHeader={"Hotel Reservation System"}
-          rightHeader={"Mubashir Jabbar"}
-          onClickLeftHeader={() => {
-            history.push("/profile");
-
-          }}
-        />
-      </div>
-
-      <div
-        style={{
-          marginTop: 20,
-          backgroundColor: "white",
-          paddingRight: 25,
-          paddingLeft: 25,
-          flexDirection: "row",
-          display: "flex",
-          justifyContent: "space-between",
+      <Header
+        leftHeader={"Hotel Reservation System"}
+        rightHeader={states.userData.name}
+        onClickLeftHeader={() => {
+          history.push("/profile");
         }}
-      >
+      />
+
+      <div className="all-reservations-text">
         <h2 style={{ color: "#1976d2", textDecoration: "underline" }}>
           All Reservations
         </h2>
@@ -53,6 +55,17 @@ function DashboardContent() {
       <div style={{ padding: 25 }}>
         <DataTable />
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </ThemeProvider>
   );
 }

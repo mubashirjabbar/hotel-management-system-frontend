@@ -1,28 +1,14 @@
 import React from "react";
+import "./Header.scss";
 
 const Header = (props) => {
-
-
   return (
-    <div
-      style={{
-        height: 70,
-        width: "100%",
-        backgroundColor: "#1976d2",
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
+    <div className="main-header">
       <div style={{ fontSize: 24, color: "white", paddingLeft: 20 }}>
         {" "}
-       {props.leftHeader}
+        {props.leftHeader}
       </div>
-      <div
-        style={{ fontSize: 20, color: "white", paddingRight: 20, cursor:'pointer'}}
-        onClick={props.onClickLeftHeader}
-      >
+      <div className="header-font" onClick={props.onClickLeftHeader}>
         {" "}
         {props.rightHeader}
       </div>

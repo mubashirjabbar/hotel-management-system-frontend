@@ -1,24 +1,27 @@
-import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {Provider} from 'react-redux';
+import React from "react";
 
+import AddReservation from "./screens/addReservation/AddReservation";
+import Pagenotfound from "./screens/pagenotfound/Pagenotfound";
+import Header from "./components/header/Header";
+import Profile from "./screens/profile/Profile";
+import Store from '../src/redux/store/store';
+import Signup from "./screens/signup/Signup";
+import Login from "./screens/login/Login";
+import Home from "./screens/home/Home";
 
 import "./App.scss";
-import Home from "./screens/home/Home";
-import Login from "./screens/login/Login";
-import Signup from "./screens/signup/Signup";
-import Pagenotfound from "./screens/pagenotfound/Pagenotfound";
-import Profile from "./screens/profile/Profile";
-import AddReservation from "./screens/addReservation/AddReservation";
-import Header from "./components/header/Header";
 
 function App() {
   return (
     <div className="app">
+      <Provider store={Store}>
       <Router>
         <div className="container">
           <Switch>
-            <Route path="/" exact component={Home} />
             <Route path="/login" exact component={Login} />
+            <Route path="/" exact component={Home} />
             <Route path="/signup" exact component={Signup} />
             <Route path="/profile" exact component={Profile} />
             <Route path="/addReservation" exact component={AddReservation} />
@@ -26,7 +29,8 @@ function App() {
             <Route component={Pagenotfound} />
           </Switch>
         </div>
-      </Router>
+        </Router>
+        </Provider>
     </div>
   );
 }

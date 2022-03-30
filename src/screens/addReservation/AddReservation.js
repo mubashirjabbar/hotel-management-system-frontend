@@ -4,6 +4,8 @@ import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
 
 import Header from "../../components/header/Header";
+import BasicReservation from "../../components/dropDownMenu/BasicReservation";
+import "./AddReservation.scss";
 
 const mdTheme = createTheme();
 
@@ -20,6 +22,12 @@ function UserProfileUpdate() {
             history.push("/profile");
           }}
         />
+      </div>
+      <div className="reservation-details">
+        <h4>Reservation details</h4>
+      </div>
+      <div className="basic-reservation">
+        <BasicReservation />
       </div>
     </ThemeProvider>
   );
