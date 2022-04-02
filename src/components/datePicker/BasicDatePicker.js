@@ -12,6 +12,7 @@ export default function BasicDatePicker() {
       <DatePicker
         label="Select date"
         value={value}
+        allowSameDateSelection
         onChange={(newValue) => {
           setValue(newValue);
         }}

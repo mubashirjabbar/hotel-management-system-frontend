@@ -49,7 +49,7 @@ export default function Login() {
 
   const formik = useFormik({
     initialValues: {
-      email: "mubashir2@gmail.com",
+      email: "mubashir1@gmail.com",
       password: "12345678",
     },
     validationSchema: Yup.object({

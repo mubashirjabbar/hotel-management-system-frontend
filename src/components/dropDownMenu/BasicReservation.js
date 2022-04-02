@@ -6,40 +6,61 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import BasicDatePicker from "../datePicker/BasicDatePicker";
 import Button from "@mui/material/Button";
+import axios from "axios";
+import Config from "../../config/config";
 
 export default function BasicReservation() {
   const [selectHotal, setSelectHotal] = React.useState("");
-  const [hotals, setHotals] = React.useState([
-    {
-      id: 1,
-      name: "Rose Palace",
-    },
-    {
-      id: 2,
-      name: "Shelton",
-    },
-    {
-      id: 3,
-      name: "White PearlOpens",
-    },
-    {
-      id: 4,
-      name: "Park Lane",
-    },
-    {
-      id: 5,
-      name: "Pearl Continental",
-    },
+  const [selectRoom, setSelectRoom] = React.useState("");
+  const [hotals, setHotals] = React.useState([]);
+  const [rooms, setRooms] = React.useState([]);
 
-    {
-      id: 6,
-      name: "Avari",
-    },
-  ]);
+  React.useEffect(() => {
+    getAllHotals();
+  }, []);
 
-  const handleChange = (event) => {
-    setSelectHotal(event.target.value.name);
-    console.log(event.target.value.name);
+  const getAllHotals = () => {
+    let tempArray = [];
+    axios
+      .get(Config.API_END_POINT + "hotels")
+      .then((resp) => {
+        resp.data.map((response) => {
+          tempArray.push({
+            id: response.id,
+            name: response.name,
+          });
+        });
+        setHotals(tempArray);
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  };
+
+  const handleChangeHotel = (event) => {
+    let hotelId = event?.target?.value?.id;
+    setSelectHotal(event.target.value);
+    getRoomForSelectedHotel(hotelId);
+  };
+  const handleChangeRoom = (event) => {
+    setSelectRoom(event.target.value);
+  };
+
+  const getRoomForSelectedHotel = (hotelId) => {
+    let tempArray = [];
+    axios
+      .get(Config.API_END_POINT + `rooms/${hotelId}`)
+      .then((resp) => {
+        resp.data.map((response) => {
+          tempArray.push({
+            rommNumber: response.room_number,
+          });
+        });
+        setRooms(tempArray);
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
   };
   const onPressReservation = () => {
     alert();
@@ -53,10 +74,6 @@ export default function BasicReservation() {
         backgroundColor: "#F8F8F8",
         padding: 12,
         borderRadius: 5,
-        // border: 1,
-        // borderWidth: 5,
-        // borderColor: "black",
-        // borderStyle: "dotted",
       }}
     >
       <div
@@ -83,7 +100,8 @@ export default function BasicReservation() {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={selectHotal}
-              onChange={(e) => handleChange(e)}
+              label="Age"
+              onChange={handleChangeHotel}
             >
               {hotals.map((resp) => {
                 return <MenuItem value={resp}>{resp.name}</MenuItem>;
@@ -116,11 +134,12 @@ export default function BasicReservation() {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={selectHotal}
-              onChange={(e) => handleChange(e)}
+              value={selectRoom}
+              label="Age"
+              onChange={handleChangeRoom}
             >
-              {hotals.map((resp) => {
-                return <MenuItem value={resp}>{resp.name}</MenuItem>;
+              {rooms.map((resp) => {
+                return <MenuItem value={resp}>{resp.rommNumber}</MenuItem>;
               })}
             </Select>
           </FormControl>
@@ -132,9 +151,8 @@ export default function BasicReservation() {
           display: "flex",
           height: "20%",
           borderBottom: "1px solid #c6c6c6",
-  
-          marginTop: 10,
 
+          marginTop: 10,
         }}
       >
         <div
@@ -148,10 +166,10 @@ export default function BasicReservation() {
           <BasicDatePicker />
         </div>
         <div style={{ width: "50%", flexDirection: "row", display: "flex" }}>
-          <h4 style={{ color: "#686868", fontWeight:200,fontSize:17}}>
+          <h4 style={{ color: "#686868", fontWeight: 200, fontSize: 17 }}>
             {" "}
             Total price:
-            <span style={{color:'#1976d2'}}>$150</span>
+            <span style={{ color: "#1976d2" }}>$150</span>
           </h4>
         </div>
       </div>
@@ -160,7 +178,7 @@ export default function BasicReservation() {
           display: "flex",
           justifyContent: "flex-end",
           paddingRight: 10,
-          marginTop:15
+          marginTop: 15,
         }}
       >
         <Button variant="contained" onClick={onPressReservation}>

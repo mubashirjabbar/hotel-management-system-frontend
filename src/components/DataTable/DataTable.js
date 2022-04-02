@@ -7,6 +7,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import Config from "../../config/config";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -28,54 +31,47 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, calories, fat, carbs, protein, a) {
-  return { name, calories, fat, carbs, protein, a };
-}
-
-const rows = [
-  createData(
-    "Pearl Continental",
-    41,
-    923321477989,
-    `100$`,
-    `  03 / 20 / 2022`,
-    "Available"
-  ),
-  createData(
-    "Pearl Continental",
-    27,
-    923321477989,
-    `125$`,
-    `03 / 21 / 2022`,
-    "Available"
-  ),
-  createData(
-    "Pearl Continental",
-    62,
-    923321477989,
-    `147$`,
-    ` 03 / 22 / 2022`,
-    "Not available"
-  ),
-  createData(
-    "Pearl Continental",
-    51,
-    923321477989,
-    `289$`,
-    ` 03 / 23 / 2022`,
-    "Available"
-  ),
-  createData(
-    "Pearl Continental",
-    36,
-    923321477989,
-    `70$`,
-    `   03 / 24 / 2022`,
-    "Not available"
-  ),
-];
+// function createData(name, roomName, hotalContact, bill, date, reservationId) {
+//   return { name, roomName, hotalContact, bill, date, reservationId };
+// }
 
 export default function CustomizedTables() {
+  const states = useSelector((state) => state);
+  const [rows, setRows] = React.useState([]);
+
+  React.useEffect(() => {
+    getAllReservations();
+  }, []);
+
+  const formatDate = (timeStamp) => {
+    console.log({timeStamp});
+    return new Date(timeStamp).toISOString().slice(0, 10);
+  };
+
+  const getAllReservations = () => {
+    let tempArray = [];
+    let id = states.userData.id;
+    axios
+      .get(Config.API_END_POINT + `reservation/${id}`)
+      .then((resp) => {
+        resp.data.map((response) => {
+          console.log("response", response);
+          tempArray.push({
+            name: response.Hotel.name,
+            roomName: response.Room.room_number,
+            hotalContact: response.Hotel.contact,
+            bill: response.Bill.bill_amount,
+            date: formatDate(response.createdAt),
+            reservationId: response.id,
+          });
+        });
+        console.log({tempArray});
+        setRows(tempArray);
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  };
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -86,7 +82,7 @@ export default function CustomizedTables() {
             <StyledTableCell align="right">Hotel Contact</StyledTableCell>
             <StyledTableCell align="right">Bill</StyledTableCell>
             <StyledTableCell align="right">Date</StyledTableCell>
-            <StyledTableCell align="right">Booking Status</StyledTableCell>
+            <StyledTableCell align="right">Reservation Id</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -95,11 +91,15 @@ export default function CustomizedTables() {
               <StyledTableCell component="th" scope="row">
                 {row.name}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
-              <StyledTableCell align="right">{row.a}</StyledTableCell>
+              <StyledTableCell align="right">{row.roomName}</StyledTableCell>
+              <StyledTableCell align="right">
+                {row.hotalContact}
+              </StyledTableCell>
+              <StyledTableCell align="right">{`$${row.bill}`}</StyledTableCell>
+              <StyledTableCell align="right">{row.date}</StyledTableCell>
+              <StyledTableCell align="right">
+                {row.reservationId}
+              </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

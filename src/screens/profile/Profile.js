@@ -47,7 +47,6 @@ function UserProfileUpdate() {
       contact: Yup.string().min(5).required("This is required field"),
     }),
     onSubmit: (values) => {
-      console.log(Config.API_END_POINT + `users/${id}`);
       setloading(true);
       axios
         .put(Config.API_END_POINT + `users/${id}`, {
