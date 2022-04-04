@@ -1,24 +1,25 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import { Link } from "react-router-dom";
-import { useFormik } from "formik";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import * as Yup from "yup";
-import Config from "../../config/config";
-import axios from "axios";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import CssBaseline from "@mui/material/CssBaseline";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Container from "@mui/material/Container";
 import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import "react-toastify/dist/ReactToastify.css";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
+
+import Config from "../../config/config";
 
 function Copyright(props) {
   return (
@@ -29,9 +30,7 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright all reserved © "}
-      {/* <Link color="inherit" href="https://mui.com/"> */}
       Hotel Management System
-      {/* </Link>{" "} */}
       {new Date().getFullYear()}
       {"."}
     </Typography>

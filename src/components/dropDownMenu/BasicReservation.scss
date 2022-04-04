@@ -1,0 +1,31 @@
+.main-Container {
+  height: 350px;
+  width: 70%;
+  background-color: "#F8F8F8";
+  padding: 12px;
+  border-radius: 5px;
+}
+
+.chooseText {
+  display: flex;
+  align-items: center;
+  height: 10%;
+}
+
+.dropdownText {
+  display: flex;
+  align-items: center;
+  height: 20%;
+}
+.datePicker {
+  width: 100%;
+  align-items: center;
+  display: flex;
+  padding-left: 1px;
+}
+.confirmButton {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 10px;
+  margin-top: 15px;
+}

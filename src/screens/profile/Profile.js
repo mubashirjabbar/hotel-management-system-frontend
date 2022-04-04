@@ -1,29 +1,25 @@
 import * as React from "react";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import { useHistory } from "react-router-dom";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import Config from "../../config/config";
-import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
+import CssBaseline from "@mui/material/CssBaseline";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Container from "@mui/material/Container";
+import "react-toastify/dist/ReactToastify.css";
+import { useHistory } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
+
+import Config from "../../config/config";
 import Header from "../../components/header/Header";
-import { min } from "date-fns";
 
 const mdTheme = createTheme();
 
@@ -33,17 +29,15 @@ function UserProfileUpdate() {
   const dispatch = useDispatch();
   const states = useSelector((state) => state);
 
-  let { name, password, contact, id } = states.userData;
+  let { name, contact, id } = states?.userData;
 
   const formik = useFormik({
     initialValues: {
       name: name,
-      password: password,
       contact: contact,
     },
     validationSchema: Yup.object({
       name: Yup.string().min(5).required("This is required field"),
-      password: Yup.string().min(8).required("This is required field"),
       contact: Yup.string().min(5).required("This is required field"),
     }),
     onSubmit: (values) => {
@@ -51,8 +45,7 @@ function UserProfileUpdate() {
       axios
         .put(Config.API_END_POINT + `users/${id}`, {
           name: values.name,
-          password: values.password,
-          contact: values.contact,
+          contact: values?.contact,
         })
         .then((resp) => {
           toast.success("Successfully profile updated", {
@@ -66,14 +59,14 @@ function UserProfileUpdate() {
           dispatch({
             type: "userData",
             payload: {
-              userData: resp.data.message,
+              userData: resp?.data,
             },
           });
           setloading(false);
         })
         .catch((error) => {
           setloading(false);
-          toast.error(error.response.data.message, {
+          toast.error(error?.response?.data?.message, {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -154,21 +147,6 @@ function UserProfileUpdate() {
                     />
                   </Grid>
 
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      name="password"
-                      label="Password"
-                      type="password"
-                      id="password"
-                      autoComplete="new-password"
-                      error={formik.errors.password ? true : false}
-                      helperText={formik.errors.password}
-                      onChange={formik.handleChange}
-                      value={formik.values.password}
-                    />
-                  </Grid>
                   <Grid item xs={12}>
                     <TextField
                       required

@@ -1,14 +1,15 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
+import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
+import { styled } from "@mui/material/styles";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import { useSelector } from "react-redux";
+import Table from "@mui/material/Table";
+import Paper from "@mui/material/Paper";
 import axios from "axios";
+
 import Config from "../../config/config";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -31,10 +32,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-// function createData(name, roomName, hotalContact, bill, date, reservationId) {
-//   return { name, roomName, hotalContact, bill, date, reservationId };
-// }
-
 export default function CustomizedTables() {
   const states = useSelector((state) => state);
   const [rows, setRows] = React.useState([]);
@@ -43,29 +40,25 @@ export default function CustomizedTables() {
     getAllReservations();
   }, []);
 
-  const formatDate = (timeStamp) => {
-    console.log({timeStamp});
-    return new Date(timeStamp).toISOString().slice(0, 10);
-  };
-
   const getAllReservations = () => {
     let tempArray = [];
-    let id = states.userData.id;
+    let id = states?.userData?.id;
     axios
       .get(Config.API_END_POINT + `reservation/${id}`)
       .then((resp) => {
         resp.data.map((response) => {
-          console.log("response", response);
           tempArray.push({
-            name: response.Hotel.name,
-            roomName: response.Room.room_number,
-            hotalContact: response.Hotel.contact,
-            bill: response.Bill.bill_amount,
-            date: formatDate(response.createdAt),
-            reservationId: response.id,
+            name: response?.Hotel?.name,
+            roomName: response?.Room?.room_number,
+            hotalContact: response?.Hotel?.contact,
+            bill: response?.Bill?.bill_amount,
+            date: response?.reservation_date,
+            reservationId: response?.id,
           });
         });
-        console.log({tempArray});
+        tempArray.sort(function (a, b) {
+          return new Date(a.date) - new Date(b.date);
+        });
         setRows(tempArray);
       })
       .catch((error) => {

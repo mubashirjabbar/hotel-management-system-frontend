@@ -1,23 +1,32 @@
 import * as React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Button from "@mui/material/Button";
-import { useHistory } from "react-router-dom";
-import DataTable from "../../components/dataTable/DataTable";
-import Header from "../../components/header/Header";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useHistory } from "react-router-dom";
+import Button from "@mui/material/Button";
 import { useSelector} from 'react-redux';
+
+import DataTable from "../../components/dataTable/DataTable";
+import Header from "../../components/header/Header";
 
 import "./Home.scss";
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
+export default function Home(props) {
   const history = useHistory();
   const states = useSelector(state => state);
 
   React.useEffect(() => {
-    toast.success("Successfully login", {
+    let toastText = ""
+    if (props?.location?.state?.login) {
+      toastText = "Successfully login"
+    }
+    if (props?.location?.state?.fromAddReservation) {
+      toastText = "Reservation added successfully"
+    }
+
+    toast.success(toastText, {
       position: "top-right",
       autoClose: 4000,
       hideProgressBar: false,
@@ -35,7 +44,7 @@ function DashboardContent() {
     <ThemeProvider theme={mdTheme}>
       <Header
         leftHeader={"Hotel Reservation System"}
-        rightHeader={states.userData.name}
+        rightHeader={states?.userData?.name}
         onClickLeftHeader={() => {
           history.push("/profile");
         }}
@@ -70,6 +79,3 @@ function DashboardContent() {
   );
 }
 
-export default function Home() {
-  return <DashboardContent />;
-}

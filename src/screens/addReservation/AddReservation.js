@@ -1,10 +1,9 @@
 import * as React from "react";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
-
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
 
-import Header from "../../components/header/Header";
 import BasicReservation from "../../components/dropDownMenu/BasicReservation";
+import Header from "../../components/header/Header";
 import "./AddReservation.scss";
 
 const mdTheme = createTheme();
