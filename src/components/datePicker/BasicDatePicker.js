@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import DatePicker from "@mui/lab/DatePicker";
 
 export default function BasicDatePicker(props) {
-  const [date, setDate] = React.useState(Date());
+  const [date, setDate] = React.useState(null);
 
   let convertedDate = new Date(date).toISOString().slice(0, 10);
   props.function(convertedDate);

@@ -23,7 +23,7 @@ export default function BasicReservation() {
   const [selectedHotelId, setSelectedHotelId] = React.useState("");
   const [selectedRoomId, setSelectedRoomId] = React.useState("");
   const [price, setPrice] = React.useState("0");
-  const [reservationDate, setReservationDate] = React.useState(Date());
+  const [reservationDate, setReservationDate] = React.useState(null);
   const states = useSelector((state) => state);
 
   React.useEffect(() => {
@@ -81,7 +81,7 @@ export default function BasicReservation() {
 
   const onPressReservation = () => {
     let { id } = states?.userData;
-    if (selectedHotelId && selectedRoomId) {
+    if (selectedHotelId && selectedRoomId &&reservationDate) {
       axios
         .post(Config.API_END_POINT + "bills", {
           user_id: id,
